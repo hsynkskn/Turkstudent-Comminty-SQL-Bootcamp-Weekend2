@@ -1,0 +1,36 @@
+-- Invoice tablosunda, tüm değerleri NULL olan kayıtların sayısını bulmanız isteniyor.
+-- Bu işlemi tek bir sorgu ile yapmalısınız. Sorguyu yazdıktan sonra, PostgreSQL’in
+-- sol alt kısmındaki Row sayısını, SQL sorgunuzda yorum satırında belirtmeniz gerekmektedir.
+---
+
+SELECT COUNT(*)
+FROM invoice
+WHERE invoice_id IS NULL
+  AND customer_id IS NULL
+  AND invoice_date IS NULL
+  AND billing_address IS NULL
+  AND billing_city IS NULL
+  AND billing_state IS NULL
+  AND billing_country IS NULL
+  AND billingpostal_code IS NULL
+  AND total IS NULL;
+
+---
+
+-- SELECT COUNT(*): Bu ifade, tüm bu koşulları sağlayan satırların sayısını döndürecektir. 
+-- FROM invoice ifadesi, veritabanındaki invoice (fatura) tablosundan veri çekmek için kullanılır. Bu, sorgunun çalışacağı ana tablodur.
+-- invoice tablosu, faturalarla ilgili bilgileri içeren bir tablo olabilir.
+-- WHERE anahtar kelimesiyle başlayan kısım, tablodan hangi satırların seçileceğini belirleyen koşulları tanımlar.
+-- invoice_id IS NULL: Bu, invoice_id sütununun NULL (boş) olması gerektiğini belirtir. Yani, fatura kimliği olmayan satırlar seçilir.
+-- customer_id IS NULL: Bu koşul, müşteri kimliği (customer_id) olmayan satırları seçmek için kullanılır.
+-- invoice_date IS NULL: Fatura tarihi (invoice_date) olmayan satırlar seçilir.
+-- billing_address IS NULL: Fatura adresi (billing_address) boş olan satırlar seçilir.
+-- billing_city IS NULL: Fatura şehri (billing_city) boş olan satırlar seçilir.
+-- billing_state IS NULL: Fatura eyaleti (billing_state) boş olan satırlar seçilir.
+-- billing_country IS NULL: Fatura ülkesi (billing_country) boş olan satırlar seçilir.
+-- billingpostal_code IS NULL: Fatura posta kodu (billingpostal_code) boş olan satırlar seçilir.
+-- total IS NULL: Son olarak, fatura toplamı (total) olmayan satırlar seçilir.
+
+---
+-- Bu sorgu, invoice tablosundaki tüm sütunları (invoice_id, customer_id, invoice_date, billing_address, billing_city, billing_state, billing_country, billingpostal_code, total) NULL olan satırları saymaktadır. 
+-- Yani, bu satırlar tamamen eksik verilere sahip olan faturaları temsil eder.

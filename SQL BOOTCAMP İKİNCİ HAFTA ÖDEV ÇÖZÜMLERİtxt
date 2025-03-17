@@ -1,0 +1,124 @@
+URK STUDENT COMMUNITY
+
+SQL BOOTCAMP İKİNCİ HAFTA ÖDEV ÇÖZÜMLERİ
+
+-- Görev1:
+-- Invoice tablosunda, tüm değerleri NULL olan kayıtların sayısını bulmanız isteniyor.
+-- Bu işlemi tek bir sorgu ile yapmalısınız. Sorguyu yazdıktan sonra, PostgreSQL’in
+-- sol alt kısmındaki Row sayısını, SQL sorgunuzda yorum satırında belirtmeniz gerekmektedir.
+---
+
+SELECT COUNT(*)
+FROM invoice
+WHERE invoice_id IS NULL
+  AND customer_id IS NULL
+  AND invoice_date IS NULL
+  AND billing_address IS NULL
+  AND billing_city IS NULL
+  AND billing_state IS NULL
+  AND billing_country IS NULL
+  AND billingpostal_code IS NULL
+  AND total IS NULL;
+
+---
+
+-- SELECT COUNT(*): Bu ifade, tüm bu koşulları sağlayan satırların sayısını döndürecektir. 
+-- FROM invoice ifadesi, veritabanındaki invoice (fatura) tablosundan veri çekmek için kullanılır. Bu, sorgunun çalışacağı ana tablodur.
+-- invoice tablosu, faturalarla ilgili bilgileri içeren bir tablo olabilir.
+-- WHERE anahtar kelimesiyle başlayan kısım, tablodan hangi satırların seçileceğini belirleyen koşulları tanımlar.
+-- invoice_id IS NULL: Bu, invoice_id sütununun NULL (boş) olması gerektiğini belirtir. Yani, fatura kimliği olmayan satırlar seçilir.
+-- customer_id IS NULL: Bu koşul, müşteri kimliği (customer_id) olmayan satırları seçmek için kullanılır.
+-- invoice_date IS NULL: Fatura tarihi (invoice_date) olmayan satırlar seçilir.
+-- billing_address IS NULL: Fatura adresi (billing_address) boş olan satırlar seçilir.
+-- billing_city IS NULL: Fatura şehri (billing_city) boş olan satırlar seçilir.
+-- billing_state IS NULL: Fatura eyaleti (billing_state) boş olan satırlar seçilir.
+-- billing_country IS NULL: Fatura ülkesi (billing_country) boş olan satırlar seçilir.
+-- billingpostal_code IS NULL: Fatura posta kodu (billingpostal_code) boş olan satırlar seçilir.
+-- total IS NULL: Son olarak, fatura toplamı (total) olmayan satırlar seçilir.
+
+---
+-- Bu sorgu, invoice tablosundaki tüm sütunları (invoice_id, customer_id, invoice_date, billing_address, billing_city, billing_state, billing_country, billingpostal_code, total) NULL olan satırları saymaktadır. 
+-- Yani, bu satırlar tamamen eksik verilere sahip olan faturaları temsil eder.
+
+
+-- Görev2:
+- Koordinasyondaki kişiler, Total değerlerinde bir hata olduğunu belirtiyorlar.
+-- Bu değerlerin iki katını görmek ve eski versiyonlarıyla birlikte karşılaştırmak için bir
+-- sorgu yazmanız isteniyor. Ayrıca, verilerin daha rahat takip edilebilmesi için,
+-- tablonun yeni versiyonuna ait kolona göre büyükten küçüğe sıralama yapılması isteniyor.
+---
+
+SELECT 
+    invoice_id,
+    customer_id,
+    invoice_date,
+    billing_address,
+    billing_city,
+    billing_state,
+    billing_country,
+    billingpostal_code,
+    total AS old_total,
+    total * 2 AS new_total
+FROM invoice
+ORDER BY total * 2 DESC;
+
+---
+-- SELECT komutu, sorguda hangi sütunların seçileceğini belirtir. Burada belirtilen sütunlar, invoice tablosundan alınacaktır.
+-- invoice_id: Fatura kimliği. Bu sütun, her fatura için benzersiz bir tanımlayıcıdır.
+-- customer_id: Müşteri kimliği. Bu, faturayı kesilen müşteri hakkında bilgi verir.
+-- invoice_date: Fatura tarihi. Bu sütun, faturanın oluşturulduğu tarihi içerir.
+-- billing_address: Faturanın gönderileceği adres.
+-- billing_city: Faturanın gönderileceği şehir.
+-- billing_state: Faturanın gönderileceği eyalet.
+-- billing_country: Faturanın gönderileceği ülke.
+-- billingpostal_code: Faturanın gönderileceği posta kodu.
+-- total AS old_total: total sütununu old_total adıyla seçiyoruz. Bu sütun, faturanın toplam tutarını içerir.
+-- total * 2 AS new_total: total sütununun değerini iki katına çıkarıyoruz ve bunu new_total olarak adlandırıyoruz. Yani, bu sütun, her faturanın toplam değerinin iki katını temsil eder.
+-- FROM invoice ifadesi, verilerin invoice tablosundan alınacağını belirtir. Yani, invoice tablosunda saklanan tüm bu sütunlar kullanılarak veriler çekilecektir.
+-- ORDER BY komutu, sorgunun sonucunu belirli bir sütuna göre sıralamak için kullanılır.
+-- Burada sıralama yapılacak sütun, total * 2 (yani faturaların toplam değerinin iki katı) değeridir.
+-- DESC ifadesi, sıralamanın büyükten küçüğe yapılmasını sağlar. Yani, en yüksek new_total (faturanın iki katı) değeri ilk sırada yer alacak şekilde sonuçlar sıralanır.
+
+---
+-- Bu sorgu, invoice tablosundaki her bir faturanın:
+-- Fatura bilgilerini (kimlik, müşteri, tarih, adres vb.)
+-- Faturanın eski toplamını (old_total)
+-- Faturanın yeni toplamını (iki katı, new_total)
+-- Yeni toplam (total * 2) değerine göre büyükten küçüğe sıralanmış olarak döndürecektir.
+
+
+-- Görev3:
+-- Adres kolonundaki verileri, soldan 3 karakter ve sağdan 4 karakter alarak
+-- birleştirmeniz ve "Açık Adres" olarak yazmanız isteniyor. Ayrıca, bu yeni açık adresi
+-- 2013 yılı ve 8. ay’a göre filtrelemeniz gerekiyor.
+---
+
+SELECT 
+    invoice_id,
+    customer_id,
+    invoice_date,
+    billing_address,
+    LEFT(billing_address, 3) || RIGHT(billing_address, 4) AS "Açık Adres"
+FROM invoice
+WHERE EXTRACT(YEAR FROM invoice_date) = 2013
+  AND EXTRACT(MONTH FROM invoice_date) = 8;
+
+---
+-- SELECT komutu, hangi sütunların sorgu sonucunda döndürüleceğini belirler. Bu sorguda seçilen sütunlar:
+-- invoice_id: Fatura kimliği, her faturaya özgü benzersiz bir tanımlayıcıdır.
+-- customer_id: Müşteri kimliği, faturayı kesilen müşteri hakkında bilgi verir.
+-- invoice_date: Fatura tarihi, faturanın kesildiği tarihtir.
+-- billing_address: Fatura adresi, faturanın gönderileceği adresi belirtir.
+-- LEFT(billing_address, 3) || RIGHT(billing_address, 4) AS "Açık Adres": Burada, billing_address (fatura adresi) sütunundan elde edilen iki kısmı (ilk 3 karakter ve son 4 karakter) birleştirerek yeni bir sütun oluşturuluyor. Bu yeni sütun, "Açık Adres" olarak adlandırılıyor.
+-- LEFT(billing_address, 3): Bu fonksiyon, billing_address sütunundaki adresin ilk 3 karakterini alır. Örneğin, eğer adres "Street 123" ise, bu fonksiyon "Str" döndürecektir.
+-- RIGHT(billing_address, 4): Bu fonksiyon, billing_address sütunundaki adresin son 4 karakterini alır. Örneğin, eğer adres "Street 123" ise, bu fonksiyon "123" döndürecektir.
+-- LEFT(billing_address, 3) || RIGHT(billing_address, 4): Bu iki kısmı birleştirmek için || operatörü kullanılır. Yani, "Str" ve "123" birleştirilerek "Str123" şeklinde yeni bir sütun oluşturulur. Bu, "Açık Adres" olarak adlandırılmıştır.
+-- FROM invoice ifadesi, verilerin hangi tablodan alınacağını belirtir. Bu sorgu invoice tablosundaki verilere dayanır. Yani, tüm faturalar ve onlara ait bilgiler bu tablodan alınır.
+-- EXTRACT(YEAR FROM invoice_date) = 2013: Bu koşul, invoice_date (fatura tarihi) sütunundaki yıl bilgisini çıkartır. EXTRACT(YEAR FROM ...) fonksiyonu ile sadece yıl bilgisi alınır. Eğer yıl 2013 ise, bu satır seçilir.
+-- EXTRACT(MONTH FROM invoice_date) = 8: Bu koşul, invoice_date sütunundaki ay bilgisini çıkarır. EXTRACT(MONTH FROM ...) fonksiyonu ile sadece ay bilgisi alınır. Eğer ay 8 (Ağustos) ise, bu satır seçilir.
+
+---
+--Bu sorgu, yalnızca 2013 yılının Ağustos ayında kesilen faturaları getirir.
+-- Her bir fatura için:
+-- invoice_id, customer_id, invoice_date, ve billing_address bilgilerini,
+-- Ve fatura adresinin başındaki 3 karakter ile sonundaki 4 karakteri birleştirerek oluşturduğumuz "Açık Adres"i döndürecektir.

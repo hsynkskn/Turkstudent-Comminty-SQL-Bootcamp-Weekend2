@@ -1,0 +1,21 @@
+TURK STUDENT COMMUNITY
+
+SQL BOOTCAMP İKİNCİ HAFTA ÖDEV SORULARI
+
+Görevler:
+
+1-) Invoice tablosunda, tüm değerleri NULL olan kayıtların sayısını bulmanız
+isteniyor.
+Bu işlemi tek bir sorgu ile yapmalısınız. Sorguyu yazdıktan sonra, PostgreSQL’in
+sol alt kısmındaki Row sayısını, SQL sorgunuzda yorum satırında belirtmeniz
+gerekmektedir.
+
+2-) Koordinasyondaki kişiler, Total değerlerinde bir hata olduğunu belirtiyorlar.
+Bu değerlerin iki katını görmek ve eski versiyonlarıyla birlikte karşılaştırmak için bir
+sorgu yazmanız isteniyor. Ayrıca, verilerin daha rahat takip edilebilmesi için,
+tablonun yeni versiyonuna ait kolona göre büyükten küçüğe sıralama yapılması
+isteniyor.
+
+3-) Adres kolonundaki verileri, soldan 3 karakter ve sağdan 4 karakter alarak
+birleştirmeniz ve "Açık Adres" olarak yazmanız isteniyor. Ayrıca, bu yeni açık adresi
+2013 yılı ve 8. ay’a göre filtrelemeniz gerekiyor.

@@ -1,0 +1,43 @@
+-- Koordinasyondaki kişiler, Total değerlerinde bir hata olduğunu belirtiyorlar.
+-- Bu değerlerin iki katını görmek ve eski versiyonlarıyla birlikte karşılaştırmak için bir
+-- sorgu yazmanız isteniyor. Ayrıca, verilerin daha rahat takip edilebilmesi için,
+-- tablonun yeni versiyonuna ait kolona göre büyükten küçüğe sıralama yapılması isteniyor.
+---
+
+SELECT 
+    invoice_id,
+    customer_id,
+    invoice_date,
+    billing_address,
+    billing_city,
+    billing_state,
+    billing_country,
+    billingpostal_code,
+    total AS old_total,
+    total * 2 AS new_total
+FROM invoice
+ORDER BY total * 2 DESC;
+
+---
+-- SELECT komutu, sorguda hangi sütunların seçileceğini belirtir. Burada belirtilen sütunlar, invoice tablosundan alınacaktır.
+-- invoice_id: Fatura kimliği. Bu sütun, her fatura için benzersiz bir tanımlayıcıdır.
+-- customer_id: Müşteri kimliği. Bu, faturayı kesilen müşteri hakkında bilgi verir.
+-- invoice_date: Fatura tarihi. Bu sütun, faturanın oluşturulduğu tarihi içerir.
+-- billing_address: Faturanın gönderileceği adres.
+-- billing_city: Faturanın gönderileceği şehir.
+-- billing_state: Faturanın gönderileceği eyalet.
+-- billing_country: Faturanın gönderileceği ülke.
+-- billingpostal_code: Faturanın gönderileceği posta kodu.
+-- total AS old_total: total sütununu old_total adıyla seçiyoruz. Bu sütun, faturanın toplam tutarını içerir.
+-- total * 2 AS new_total: total sütununun değerini iki katına çıkarıyoruz ve bunu new_total olarak adlandırıyoruz. Yani, bu sütun, her faturanın toplam değerinin iki katını temsil eder.
+-- FROM invoice ifadesi, verilerin invoice tablosundan alınacağını belirtir. Yani, invoice tablosunda saklanan tüm bu sütunlar kullanılarak veriler çekilecektir.
+-- ORDER BY komutu, sorgunun sonucunu belirli bir sütuna göre sıralamak için kullanılır.
+-- Burada sıralama yapılacak sütun, total * 2 (yani faturaların toplam değerinin iki katı) değeridir.
+-- DESC ifadesi, sıralamanın büyükten küçüğe yapılmasını sağlar. Yani, en yüksek new_total (faturanın iki katı) değeri ilk sırada yer alacak şekilde sonuçlar sıralanır.
+
+---
+-- Bu sorgu, invoice tablosundaki her bir faturanın:
+-- Fatura bilgilerini (kimlik, müşteri, tarih, adres vb.)
+-- Faturanın eski toplamını (old_total)
+-- Faturanın yeni toplamını (iki katı, new_total)
+-- Yeni toplam (total * 2) değerine göre büyükten küçüğe sıralanmış olarak döndürecektir.

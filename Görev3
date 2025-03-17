@@ -1,0 +1,34 @@
+-- Adres kolonundaki verileri, soldan 3 karakter ve sağdan 4 karakter alarak
+-- birleştirmeniz ve "Açık Adres" olarak yazmanız isteniyor. Ayrıca, bu yeni açık adresi
+-- 2013 yılı ve 8. ay’a göre filtrelemeniz gerekiyor.
+---
+
+SELECT 
+    invoice_id,
+    customer_id,
+    invoice_date,
+    billing_address,
+    LEFT(billing_address, 3) || RIGHT(billing_address, 4) AS "Açık Adres"
+FROM invoice
+WHERE EXTRACT(YEAR FROM invoice_date) = 2013
+  AND EXTRACT(MONTH FROM invoice_date) = 8;
+
+---
+-- SELECT komutu, hangi sütunların sorgu sonucunda döndürüleceğini belirler. Bu sorguda seçilen sütunlar:
+-- invoice_id: Fatura kimliği, her faturaya özgü benzersiz bir tanımlayıcıdır.
+-- customer_id: Müşteri kimliği, faturayı kesilen müşteri hakkında bilgi verir.
+-- invoice_date: Fatura tarihi, faturanın kesildiği tarihtir.
+-- billing_address: Fatura adresi, faturanın gönderileceği adresi belirtir.
+-- LEFT(billing_address, 3) || RIGHT(billing_address, 4) AS "Açık Adres": Burada, billing_address (fatura adresi) sütunundan elde edilen iki kısmı (ilk 3 karakter ve son 4 karakter) birleştirerek yeni bir sütun oluşturuluyor. Bu yeni sütun, "Açık Adres" olarak adlandırılıyor.
+-- LEFT(billing_address, 3): Bu fonksiyon, billing_address sütunundaki adresin ilk 3 karakterini alır. Örneğin, eğer adres "Street 123" ise, bu fonksiyon "Str" döndürecektir.
+-- RIGHT(billing_address, 4): Bu fonksiyon, billing_address sütunundaki adresin son 4 karakterini alır. Örneğin, eğer adres "Street 123" ise, bu fonksiyon "123" döndürecektir.
+-- LEFT(billing_address, 3) || RIGHT(billing_address, 4): Bu iki kısmı birleştirmek için || operatörü kullanılır. Yani, "Str" ve "123" birleştirilerek "Str123" şeklinde yeni bir sütun oluşturulur. Bu, "Açık Adres" olarak adlandırılmıştır.
+-- FROM invoice ifadesi, verilerin hangi tablodan alınacağını belirtir. Bu sorgu invoice tablosundaki verilere dayanır. Yani, tüm faturalar ve onlara ait bilgiler bu tablodan alınır.
+-- EXTRACT(YEAR FROM invoice_date) = 2013: Bu koşul, invoice_date (fatura tarihi) sütunundaki yıl bilgisini çıkartır. EXTRACT(YEAR FROM ...) fonksiyonu ile sadece yıl bilgisi alınır. Eğer yıl 2013 ise, bu satır seçilir.
+-- EXTRACT(MONTH FROM invoice_date) = 8: Bu koşul, invoice_date sütunundaki ay bilgisini çıkarır. EXTRACT(MONTH FROM ...) fonksiyonu ile sadece ay bilgisi alınır. Eğer ay 8 (Ağustos) ise, bu satır seçilir.
+
+---
+--Bu sorgu, yalnızca 2013 yılının Ağustos ayında kesilen faturaları getirir.
+-- Her bir fatura için:
+-- invoice_id, customer_id, invoice_date, ve billing_address bilgilerini,
+-- Ve fatura adresinin başındaki 3 karakter ile sonundaki 4 karakteri birleştirerek oluşturduğumuz "Açık Adres"i döndürecektir.

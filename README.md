@@ -1,0 +1,1 @@
+# Turkstudent-Comminty-SQL-Bootcamp-Weekend2
